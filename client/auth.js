@@ -1,8 +1,6 @@
 const API_BASE_URL =
-  globalThis.location?.hostname === "localhost" ||
-  globalThis.location?.hostname === "127.0.0.1"
-    ? "http://localhost:5000/api"
-    : "/api";
+  globalThis.CRAVE_CULTURE_API_BASE_URL ||
+  "https://crave-culture.onrender.com/api";
 
 const loginForm = document.getElementById("adminLoginForm");
 const loginMessage = document.getElementById("adminLoginMessage");

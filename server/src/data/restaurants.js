@@ -9,7 +9,7 @@ const restaurants = [
     phone: "08032126603, 08033986769",
     openingHours: "9am - 10pm",
     priceRange: "₦1500 and above",
-    coverImage: "dabira-cover.jpg"
+    coverImage: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80"
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ const restaurants = [
     phone: "08068594692",
     openingHours: "10am - 11pm",
     priceRange: "₦2000 and above",
-    coverImage: "awesome-cover.jpg"
+    coverImage: "https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=1200&q=80"
   }
 ];
 
