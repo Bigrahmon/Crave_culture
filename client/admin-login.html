@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login | Crave Culture</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a href="index.html" class="brand">
+        <img src="brand-logo.png" alt="Crave Culture logo" class="brand-logo" />
+        <span>Crave Culture</span>
+      </a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="index.html#top-restaurants">Restaurants</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="admin-auth-page">
+    <div class="container">
+      <div class="admin-auth-card">
+        <div class="admin-auth-header">
+          <span class="admin-chip">Admin Access</span>
+          <h1>Welcome back</h1>
+          <p>Sign in to manage restaurants, reviews, and updates on Crave Culture.</p>
+        </div>
+
+        <form id="adminLoginForm" class="styled-review-form">
+          <div class="form-field">
+            <label for="adminEmail">Email</label>
+            <input type="email" id="adminEmail" placeholder="admin@craveculture.com" required />
+          </div>
+
+          <div class="form-field">
+            <label for="adminPassword">Password</label>
+            <input type="password" id="adminPassword" placeholder="Enter password" required />
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" id="loginButton" class="btn btn-primary review-submit-btn">Login</button>
+            <p id="adminLoginMessage" class="form-message"></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script src="auth.js"></script>
+</body>
+</html>

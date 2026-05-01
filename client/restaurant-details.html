@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restaurant Details | Crave Culture</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a href="index.html" class="brand">
+        <img src="brand-logo.png" alt="Crave Culture logo" class="brand-logo" />
+        <span>Crave Culture</span>
+      </a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="index.html#top-restaurants">Restaurants</a>
+        <a href="user-auth.html">User Login</a>
+        <a href="admin-login.html">Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="details-page">
+    <div class="container">
+      <a class="back-link" href="index.html#top-restaurants">← Back to restaurants</a>
+
+      <div id="restaurantDetails"></div>
+
+      <section class="details-block reviews-section">
+        <div class="details-section-header">
+          <h2>Student Reviews</h2>
+          <p>What students are saying about this restaurant</p>
+        </div>
+        <div id="restaurantReviews" class="review-list"></div>
+      </section>
+
+      <section class="details-block review-form-section" id="reviewFormSection">
+        <div class="details-section-header">
+          <h2>Write a Review</h2>
+          <p>Share your food experience and help other students decide</p>
+        </div>
+
+        <form id="reviewForm" class="styled-review-form">
+          <div class="form-row">
+            <div class="form-field">
+              <label for="reviewerName">Your Name</label>
+              <input type="text" id="reviewerName" placeholder="Enter your name" required />
+            </div>
+
+            <div class="form-field">
+              <label for="rating">Your Rating</label>
+              <select id="rating" required>
+                <option value="">Select rating</option>
+                <option value="5">5 Stars</option>
+                <option value="4">4 Stars</option>
+                <option value="3">3 Stars</option>
+                <option value="2">2 Stars</option>
+                <option value="1">1 Star</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="comment">Your Review</label>
+            <textarea id="comment" placeholder="Write your review here..." required></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary review-submit-btn">Submit Review</button>
+            <p id="reviewMessage" class="form-message"></p>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <script src="details.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+server/.env
+.env
+.vercel
+
+node_modules
+server/node_modules
+client/node_modules
+
+server/uploads
+uploads
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

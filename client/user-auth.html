@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Login | Crave Culture</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a href="index.html" class="brand">
+        <img src="brand-logo.png" alt="Crave Culture logo" class="brand-logo" />
+        <span>Crave Culture</span>
+      </a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="index.html#top-restaurants">Restaurants</a>
+        <a href="restaurant-details.html?slug=dabira-foods">Reviews</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="admin-auth-page">
+    <div class="container">
+      <div class="admin-auth-card">
+        <div class="admin-auth-header">
+          <span class="admin-chip">User Account</span>
+          <h1>Sign up or login</h1>
+          <p>Create an account to write reviews and keep your name saved on Crave Culture.</p>
+        </div>
+
+        <div class="auth-toggle" role="tablist" aria-label="Switch auth mode">
+          <button type="button" id="showLoginBtn" class="auth-toggle-btn active">Login</button>
+          <button type="button" id="showSignupBtn" class="auth-toggle-btn">Sign Up</button>
+        </div>
+
+        <form id="userLoginForm" class="styled-review-form auth-form">
+          <div class="form-field">
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" placeholder="you@example.com" required />
+          </div>
+
+          <div class="form-field">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" placeholder="Enter password" required />
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary review-submit-btn">Login</button>
+            <p id="loginMessage" class="form-message"></p>
+          </div>
+        </form>
+
+        <form id="userSignupForm" class="styled-review-form auth-form hidden">
+          <div class="form-field">
+            <label for="signupName">Full Name</label>
+            <input type="text" id="signupName" placeholder="Your full name" required />
+          </div>
+
+          <div class="form-field">
+            <label for="signupEmail">Email</label>
+            <input type="email" id="signupEmail" placeholder="you@example.com" required />
+          </div>
+
+          <div class="form-field">
+            <label for="signupPassword">Password</label>
+            <input type="password" id="signupPassword" placeholder="Create password (min 6 chars)" minlength="6" required />
+          </div>
+
+          <div class="form-field">
+            <label for="signupConfirmPassword">Confirm Password</label>
+            <input type="password" id="signupConfirmPassword" placeholder="Confirm password" minlength="6" required />
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary review-submit-btn">Sign Up</button>
+            <p id="signupMessage" class="form-message"></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script src="user-auth.js"></script>
+</body>
+</html>
