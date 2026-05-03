@@ -2,8 +2,6 @@ const API_BASE_URL =
   globalThis.CRAVE_CULTURE_API_BASE_URL ||
   "https://crave-culture.onrender.com/api";
 
-const API_SERVER_URL = API_BASE_URL.replace(/\/api$/, "");
-
 let restaurants = [];
 let editingMode = false;
 let editingRestaurantId = null;
@@ -174,19 +172,25 @@ function renderOverview() {
 }
 
 function getImageUrl(image) {
-  if (!image) {
-    return "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80";
+  const normalized = String(image || "").trim().replace(/\\/g, "/");
+
+  if (!normalized) {
+    return "/images/default-restaurant.jpg";
   }
 
-  if (image.startsWith("http")) {
-    return image;
+  if (normalized.startsWith("http://") || normalized.startsWith("https://")) {
+    return normalized;
   }
 
-  if (image.startsWith("/")) {
-    return `${API_SERVER_URL}${image}`;
+  if (normalized.startsWith("/")) {
+    return normalized;
   }
 
-  return `${API_SERVER_URL}/${image}`;
+  if (normalized.startsWith("images/")) {
+    return `/${normalized}`;
+  }
+
+  return `/images/${normalized}`;
 }
 
 function renderRestaurantTable() {
@@ -209,7 +213,7 @@ function renderRestaurantTable() {
               alt="${restaurant.name}"
               loading="lazy"
               decoding="async"
-              onerror="this.src='https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80'"
+              onerror="this.src='/images/default-restaurant.jpg'"
             />
           </td>
 

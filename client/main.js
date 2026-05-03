@@ -2,8 +2,6 @@ const API_BASE_URL =
   globalThis.CRAVE_CULTURE_API_BASE_URL ||
   "https://crave-culture.onrender.com/api";
 
-const API_SERVER_URL = API_BASE_URL.replace(/\/api$/, "");
-
 const demoRestaurants = [
   {
     id: 1,
@@ -138,7 +136,7 @@ function resolveImageUrl(imageUrl = "") {
   const normalizedImageUrl = String(imageUrl || "").trim().replace(/\\/g, "/");
 
   if (!normalizedImageUrl) {
-    return "https://via.placeholder.com/1200x700?text=Restaurant+Image";
+    return "/images/default-restaurant.jpg";
   }
 
   if (
@@ -149,10 +147,14 @@ function resolveImageUrl(imageUrl = "") {
   }
 
   if (normalizedImageUrl.startsWith("/")) {
-    return `${API_SERVER_URL}${normalizedImageUrl}`;
+    return normalizedImageUrl;
   }
 
-  return `${API_SERVER_URL}/${normalizedImageUrl}`;
+  if (normalizedImageUrl.startsWith("images/")) {
+    return `/${normalizedImageUrl}`;
+  }
+
+  return `/images/${normalizedImageUrl}`;
 }
 
 function enrichRestaurants(restaurants) {
@@ -163,9 +165,7 @@ function enrichRestaurants(restaurants) {
       ...restaurant,
       coverImage:
         resolveImageUrl(
-          restaurant.coverImage ||
-            match?.coverImage ||
-            "https://via.placeholder.com/1200x700?text=Restaurant+Image"
+          restaurant.coverImage || match?.coverImage || ""
         ),
       rating: match?.rating || 4.2,
       totalReviews: match?.totalReviews || 12,
@@ -261,7 +261,7 @@ function renderRestaurants(restaurants) {
             class="restaurant-image"
             loading="lazy"
             decoding="async"
-            onerror="this.onerror=null;this.src='https://via.placeholder.com/1200x700?text=Restaurant+Image';"
+            onerror="this.onerror=null;this.src='/images/default-restaurant.jpg';"
           />
           <span class="category-badge">${escapeHtml(
             restaurant.tags?.[0] || "Food"
