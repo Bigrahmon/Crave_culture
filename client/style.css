@@ -1441,3 +1441,25 @@ a {
     grid-template-columns: 1fr;
   }
 }
+
+.table-img {
+  width: 70px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.btn-small {
+  padding: 8px 12px;
+  font-size: 13px;
+  margin-right: 6px;
+}
+
+.btn-danger {
+  background: #dc2626;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+}

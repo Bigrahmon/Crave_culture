@@ -1,23 +1,37 @@
 const express = require("express");
-const router = express.Router();
+const multer = require("multer");
 const supabase = require("../lib/supabaseClient");
 const protectAdmin = require("../middleware/authMiddleware");
+const { uploadBufferToCloudinary } = require("../lib/cloudinary");
 
-function formatRestaurant(row) {
+const router = express.Router();
+
+const storage = multer.memoryStorage();
+
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024
+  }
+});
+
+function formatRestaurant(restaurant) {
   return {
-    id: row.id,
-    name: row.name,
-    slug: row.slug,
-    category: row.category,
-    shortDescription: row.short_description,
-    address: row.address,
-    phone: row.phone,
-    openingHours: row.opening_hours,
-    priceRange: row.price_range,
-    coverImage: row.cover_image
+    id: restaurant.id,
+    name: restaurant.name,
+    slug: restaurant.slug,
+    category: restaurant.category,
+    shortDescription: restaurant.short_description,
+    address: restaurant.address,
+    phone: restaurant.phone,
+    openingHours: restaurant.opening_hours,
+    priceRange: restaurant.price_range,
+    coverImage: restaurant.cover_image,
+    createdAt: restaurant.created_at
   };
 }
 
+// GET all restaurants
 router.get("/", async (req, res) => {
   try {
     const { data, error } = await supabase
@@ -34,20 +48,22 @@ router.get("/", async (req, res) => {
 
     res.json(data.map(formatRestaurant));
   } catch (error) {
-    console.error("Error fetching restaurants:", error);
     res.status(500).json({
       message: "Server error while fetching restaurants",
-      ...(process.env.NODE_ENV === "development" && { error: error.message })
+      error: error.message
     });
   }
 });
 
+// GET one restaurant by slug
 router.get("/:slug", async (req, res) => {
   try {
+    const { slug } = req.params;
+
     const { data, error } = await supabase
       .from("restaurants")
       .select("*")
-      .eq("slug", req.params.slug)
+      .eq("slug", slug)
       .single();
 
     if (error || !data) {
@@ -58,15 +74,15 @@ router.get("/:slug", async (req, res) => {
 
     res.json(formatRestaurant(data));
   } catch (error) {
-    console.error("Error fetching restaurant details:", error);
     res.status(500).json({
-      message: "Server error while fetching restaurant details",
-      ...(process.env.NODE_ENV === "development" && { error: error.message })
+      message: "Server error while fetching restaurant",
+      error: error.message
     });
   }
 });
 
-router.post("/", protectAdmin, async (req, res) => {
+// ADD restaurant with optional Cloudinary image upload
+router.post("/", protectAdmin, upload.single("coverImageFile"), async (req, res) => {
   try {
     const {
       name,
@@ -77,13 +93,20 @@ router.post("/", protectAdmin, async (req, res) => {
       phone,
       openingHours,
       priceRange,
-      coverImage
+      coverImageUrl
     } = req.body;
 
     if (!name || !slug || !category || !address) {
       return res.status(400).json({
-        message: "Please fill all required restaurant fields"
+        message: "Restaurant name, slug, category, and address are required."
       });
+    }
+
+    let coverImage = coverImageUrl || "";
+
+    if (req.file) {
+      const uploadedImage = await uploadBufferToCloudinary(req.file.buffer);
+      coverImage = uploadedImage.secure_url;
     }
 
     const { data, error } = await supabase
@@ -95,10 +118,10 @@ router.post("/", protectAdmin, async (req, res) => {
           category,
           short_description: shortDescription || "",
           address,
-          phone,
-          opening_hours: openingHours,
-          price_range: priceRange,
-          cover_image: coverImage || ""
+          phone: phone || "",
+          opening_hours: openingHours || "",
+          price_range: priceRange || "",
+          cover_image: coverImage
         }
       ])
       .select()
@@ -116,17 +139,18 @@ router.post("/", protectAdmin, async (req, res) => {
       restaurant: formatRestaurant(data)
     });
   } catch (error) {
-    console.error("Error adding restaurant:", error);
     res.status(500).json({
       message: "Server error while adding restaurant",
-      ...(process.env.NODE_ENV === "development" && { error: error.message })
+      error: error.message
     });
   }
 });
 
-router.put("/:id", protectAdmin, async (req, res) => {
+// UPDATE restaurant with optional new Cloudinary image
+router.put("/:id", protectAdmin, upload.single("coverImageFile"), async (req, res) => {
   try {
     const { id } = req.params;
+
     const {
       name,
       slug,
@@ -136,13 +160,21 @@ router.put("/:id", protectAdmin, async (req, res) => {
       phone,
       openingHours,
       priceRange,
-      coverImage
+      coverImageUrl,
+      existingCoverImage
     } = req.body;
 
     if (!name || !slug || !category || !address) {
       return res.status(400).json({
-        message: "Please fill all required restaurant fields"
+        message: "Restaurant name, slug, category, and address are required."
       });
+    }
+
+    let coverImage = coverImageUrl || existingCoverImage || "";
+
+    if (req.file) {
+      const uploadedImage = await uploadBufferToCloudinary(req.file.buffer);
+      coverImage = uploadedImage.secure_url;
     }
 
     const { data, error } = await supabase
@@ -153,19 +185,19 @@ router.put("/:id", protectAdmin, async (req, res) => {
         category,
         short_description: shortDescription || "",
         address,
-        phone,
-        opening_hours: openingHours,
-        price_range: priceRange,
-        cover_image: coverImage || ""
+        phone: phone || "",
+        opening_hours: openingHours || "",
+        price_range: priceRange || "",
+        cover_image: coverImage
       })
       .eq("id", id)
       .select()
       .single();
 
-    if (error || !data) {
+    if (error) {
       return res.status(500).json({
         message: "Failed to update restaurant",
-        error: error?.message
+        error: error.message
       });
     }
 
@@ -174,14 +206,14 @@ router.put("/:id", protectAdmin, async (req, res) => {
       restaurant: formatRestaurant(data)
     });
   } catch (error) {
-    console.error("Error updating restaurant:", error);
     res.status(500).json({
       message: "Server error while updating restaurant",
-      ...(process.env.NODE_ENV === "development" && { error: error.message })
+      error: error.message
     });
   }
 });
 
+// DELETE restaurant
 router.delete("/:id", protectAdmin, async (req, res) => {
   try {
     const { id } = req.params;
@@ -202,10 +234,9 @@ router.delete("/:id", protectAdmin, async (req, res) => {
       message: "Restaurant deleted successfully"
     });
   } catch (error) {
-    console.error("Error deleting restaurant:", error);
     res.status(500).json({
       message: "Server error while deleting restaurant",
-      ...(process.env.NODE_ENV === "development" && { error: error.message })
+      error: error.message
     });
   }
 });

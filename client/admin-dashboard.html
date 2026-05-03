@@ -1,632 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Crave Culture Admin Dashboard</title>
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: #f7f1e8;
-      color: #071b3a;
-    }
-
-    .admin-topbar {
-      width: 100%;
-      background: #8f163d;
-      color: white;
-      padding: 18px 7%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .admin-topbar h1 {
-      font-size: 24px;
-    }
-
-    .topbar-actions {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .topbar-actions a,
-    .topbar-actions button {
-      background: white;
-      color: #8f163d;
-      padding: 10px 16px;
-      border-radius: 20px;
-      border: none;
-      text-decoration: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .admin-wrapper {
-      width: 90%;
-      max-width: 1250px;
-      margin: 35px auto;
-      display: grid;
-      grid-template-columns: 260px 1fr;
-      gap: 25px;
-    }
-
-    .sidebar {
-      background: white;
-      border-radius: 22px;
-      padding: 25px;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
-      height: fit-content;
-    }
-
-    .sidebar h2 {
-      color: #071b3a;
-      margin-bottom: 10px;
-    }
-
-    .sidebar p {
-      color: #607089;
-      font-size: 14px;
-      line-height: 1.6;
-      margin-bottom: 25px;
-    }
-
-    .sidebar a {
-      display: block;
-      text-decoration: none;
-      background: #f7f1e8;
-      color: #071b3a;
-      padding: 14px 16px;
-      margin-bottom: 10px;
-      border-radius: 14px;
-      font-weight: bold;
-      font-size: 14px;
-    }
-
-    .sidebar a:hover {
-      background: #8f163d;
-      color: white;
-    }
-
-    .main-content {
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
-    }
-
-    .section-title {
-      font-size: 28px;
-      color: #071b3a;
-      margin-bottom: 8px;
-    }
-
-    .section-subtitle {
-      color: #607089;
-      margin-bottom: 25px;
-      font-size: 15px;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
-    .stat-box {
-      background: #f7f1e8;
-      border: 1px solid #eadfd4;
-      border-radius: 18px;
-      padding: 25px;
-    }
-
-    .stat-box h3 {
-      color: #a4174c;
-      font-size: 30px;
-      margin-bottom: 10px;
-    }
-
-    .stat-box p {
-      font-weight: bold;
-      color: #49566d;
-      font-size: 14px;
-    }
-
-    .admin-form {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    label {
-      font-weight: bold;
-      font-size: 14px;
-      color: #071b3a;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      border: 1px solid #d6dbe5;
-      border-radius: 16px;
-      padding: 14px 16px;
-      font-size: 15px;
-      outline: none;
-      background: #fff;
-      color: #071b3a;
-    }
-
-    textarea {
-      min-height: 110px;
-      resize: vertical;
-    }
-
-    input:focus,
-    textarea:focus {
-      border-color: #8f163d;
-      box-shadow: 0 0 0 3px rgba(143, 22, 61, 0.12);
-    }
-
-    .form-buttons {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .admin-btn {
-      background: #a4174c;
-      color: white;
-      border: none;
-      padding: 14px 22px;
-      border-radius: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .admin-btn:hover {
-      background: #7f1238;
-    }
-
-    .cancel-btn {
-      background: #071b3a;
-      color: white;
-      border: none;
-      padding: 14px 22px;
-      border-radius: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      display: none;
-    }
-
-    .message {
-      font-weight: bold;
-      margin-top: 5px;
-    }
-
-    .image-preview {
-      margin-top: 10px;
-      display: none;
-    }
-
-    .image-preview img {
-      width: 100%;
-      max-height: 230px;
-      object-fit: cover;
-      border-radius: 18px;
-      border: 1px solid #e5dfd7;
-    }
-
-    .upload-row {
-      margin-top: 10px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .upload-row input[type="file"] {
-      flex: 1;
-      min-width: 220px;
-    }
-
-    .upload-btn {
-      background: #071b3a;
-      color: white;
-      border: none;
-      padding: 12px 16px;
-      border-radius: 12px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .table-container {
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 850px;
-    }
-
-    th,
-    td {
-      padding: 15px;
-      border-bottom: 1px solid #eee3d8;
-      text-align: left;
-      font-size: 14px;
-      vertical-align: middle;
-    }
-
-    th {
-      color: #071b3a;
-      background: #f7f1e8;
-    }
-
-    td img {
-      width: 80px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 12px;
-      background: #eee;
-    }
-
-    .action-buttons {
-      display: flex;
-      gap: 8px;
-    }
-
-    .edit-btn,
-    .delete-btn {
-      border: none;
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 13px;
-    }
-
-    .edit-btn {
-      background: #071b3a;
-      color: white;
-    }
-
-    .delete-btn {
-      background: #e63946;
-      color: white;
-    }
-
-    .review-card {
-      background: #f7f1e8;
-      border: 1px solid #eadfd4;
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 12px;
-    }
-
-    .review-card strong {
-      color: #071b3a;
-    }
-
-    .review-card span {
-      color: #f4b000;
-    }
-
-    .review-card p {
-      color: #49566d;
-      margin-top: 8px;
-      line-height: 1.5;
-    }
-
-    @media (max-width: 900px) {
-      .admin-wrapper {
-        grid-template-columns: 1fr;
-        width: 94%;
-        margin: 22px auto;
-      }
-
-      .stats-grid,
-      .form-row {
-        grid-template-columns: 1fr;
-      }
-
-      .admin-topbar {
-        flex-direction: column;
-        gap: 15px;
-        align-items: flex-start;
-      }
-
-      .card {
-        padding: 22px;
-      }
-
-      .section-title {
-        font-size: 24px;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .admin-topbar {
-        padding: 14px 5%;
-      }
-
-      .admin-topbar h1 {
-        font-size: 20px;
-      }
-
-      .topbar-actions {
-        width: 100%;
-      }
-
-      .topbar-actions a,
-      .topbar-actions button {
-        flex: 1;
-        text-align: center;
-        padding: 10px 12px;
-      }
-
-      .sidebar,
-      .card {
-        border-radius: 16px;
-        padding: 16px;
-      }
-
-      .stat-box {
-        padding: 18px;
-      }
-
-      .stat-box h3 {
-        font-size: 24px;
-      }
-
-      th,
-      td {
-        padding: 12px;
-        font-size: 13px;
-      }
-
-      .edit-btn,
-      .delete-btn {
-        padding: 8px 10px;
-        font-size: 12px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <header class="admin-topbar">
-    <h1>Crave Culture Admin</h1>
-
-    <div class="topbar-actions">
-      <a href="index.html">View Website</a>
-      <button id="logoutBtn">Logout</button>
-    </div>
-  </header>
-
-  <main class="admin-wrapper">
-    <aside class="sidebar">
-      <h2>Admin Panel</h2>
-      <p>Manage Crave Culture restaurants, reviews, and food spots from one place.</p>
-
-      <a href="#overview">Overview</a>
-      <a href="#addRestaurantSection">Add Restaurant</a>
-      <a href="#manageRestaurants">Manage Restaurants</a>
-      <a href="#recentReviews">Recent Reviews</a>
-    </aside>
-
-    <section class="main-content">
-      <section id="overview" class="card">
-        <h2 class="section-title">Overview</h2>
-        <p class="section-subtitle">Quick summary of your restaurant platform</p>
-
-        <div class="stats-grid">
-          <div class="stat-box">
-            <h3 id="totalRestaurants">0</h3>
-            <p>Total Restaurants</p>
-          </div>
-
-          <div class="stat-box">
-            <h3 id="totalReviews">0</h3>
-            <p>Total Reviews</p>
-          </div>
-
-          <div class="stat-box">
-            <h3 id="topRestaurant">---</h3>
-            <p>Top Rated Spot</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="addRestaurantSection" class="card">
-        <h2 id="formTitle" class="section-title">Add Restaurant</h2>
-        <p class="section-subtitle">Add a new food spot to Crave Culture</p>
-
-        <form id="addRestaurantForm" class="admin-form">
-          <input type="hidden" id="editingRestaurantId" />
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="restaurantName">Restaurant Name</label>
-              <input
-                type="text"
-                id="restaurantName"
-                placeholder="Orange Kitchen"
-                required
-              />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | Crave Culture</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header class="admin-header">
+      <div class="container nav">
+        <h2>Crave Culture Admin</h2>
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="restaurants.html">Restaurants</a>
+          <button id="logoutBtn" class="btn btn-outline">Logout</button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="admin-page">
+      <div class="container admin-layout">
+        <aside class="admin-sidebar">
+          <h2>Admin Panel</h2>
+          <p>Manage Crave Culture restaurants from one place.</p>
+
+          <a href="#overview" class="sidebar-link">Overview</a>
+          <a href="#addRestaurant" class="sidebar-link">Add Restaurant</a>
+          <a href="#manageRestaurants" class="sidebar-link">Manage Restaurants</a>
+        </aside>
+
+        <section class="admin-content">
+          <section id="overview" class="admin-card">
+            <h1>Overview</h1>
+            <p>Quick summary of your restaurant platform.</p>
+
+            <div class="stats-grid">
+              <div class="stat-card">
+                <h2 id="totalRestaurants">0</h2>
+                <p>Total Restaurants</p>
+              </div>
+
+              <div class="stat-card">
+                <h2 id="totalReviews">0</h2>
+                <p>Total Reviews</p>
+              </div>
+
+              <div class="stat-card">
+                <h2 id="topRestaurant">---</h2>
+                <p>Top Rated Spot</p>
+              </div>
             </div>
+          </section>
 
-            <div class="form-group">
-              <label for="restaurantSlug">Slug</label>
-              <input
-                type="text"
-                id="restaurantSlug"
-                placeholder="orange-kitchen"
-                required
-              />
-            </div>
-          </div>
+          <section id="addRestaurant" class="admin-card">
+            <h1 id="formTitle">Add Restaurant</h1>
+            <p>Add a new food spot to Crave Culture.</p>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="restaurantCategory">Category</label>
-              <input
-                type="text"
-                id="restaurantCategory"
-                placeholder="African Foods, Ice Cream, Snacks"
-                required
-              />
-            </div>
+            <form id="addRestaurantForm" enctype="multipart/form-data">
+              <input type="hidden" id="restaurantId" name="restaurantId" />
+              <input type="hidden" id="existingCoverImage" name="existingCoverImage" />
 
-            <div class="form-group">
-              <label for="restaurantPriceRange">Price Range</label>
-              <input
-                type="text"
-                id="restaurantPriceRange"
-                placeholder="₦1500 and above"
-              />
-            </div>
-          </div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="name">Restaurant Name</label>
+                  <input type="text" id="name" name="name" required />
+                </div>
 
-          <div class="form-group">
-            <label for="restaurantShortDescription">Short Description</label>
-            <textarea
-              id="restaurantShortDescription"
-              placeholder="Taste at its best"
-            ></textarea>
-          </div>
+                <div class="form-group">
+                  <label for="slug">Slug</label>
+                  <input type="text" id="slug" name="slug" placeholder="example-restaurant" required />
+                </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="restaurantAddress">Address</label>
-              <input
-                type="text"
-                id="restaurantAddress"
-                placeholder="Along market road through lion junction"
-                required
-              />
-            </div>
+                <div class="form-group">
+                  <label for="category">Category</label>
+                  <input type="text" id="category" name="category" required />
+                </div>
 
-            <div class="form-group">
-              <label for="restaurantPhone">Phone</label>
-              <input
-                type="text"
-                id="restaurantPhone"
-                placeholder="08107516042"
-              />
-            </div>
-          </div>
+                <div class="form-group">
+                  <label for="priceRange">Price Range</label>
+                  <input type="text" id="priceRange" name="priceRange" placeholder="₦1500 and above" />
+                </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label for="restaurantOpeningHours">Opening Hours</label>
-              <input
-                type="text"
-                id="restaurantOpeningHours"
-                placeholder="9am - 10pm"
-              />
-            </div>
+                <div class="form-group full">
+                  <label for="shortDescription">Short Description</label>
+                  <textarea id="shortDescription" name="shortDescription" rows="4"></textarea>
+                </div>
 
-            <div class="form-group">
-              <label for="restaurantCoverImage">Cover Image URL</label>
-              <input
-                type="text"
-                id="restaurantCoverImage"
-                placeholder="https://..."
-              />
-              <div class="upload-row">
-                <input type="file" id="restaurantCoverFile" accept="image/*" />
-                <button type="button" id="uploadCoverBtn" class="upload-btn">
-                  Upload Photo
+                <div class="form-group">
+                  <label for="address">Address</label>
+                  <input type="text" id="address" name="address" required />
+                </div>
+
+                <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <input type="text" id="phone" name="phone" />
+                </div>
+
+                <div class="form-group">
+                  <label for="openingHours">Opening Hours</label>
+                  <input type="text" id="openingHours" name="openingHours" placeholder="9am - 10pm" />
+                </div>
+
+                <div class="form-group">
+                  <label for="coverImageFile">Upload Restaurant Image</label>
+                  <input type="file" id="coverImageFile" name="coverImageFile" accept="image/*" />
+                </div>
+
+                <div class="form-group full">
+                  <label for="coverImageUrl">Or Paste Image URL</label>
+                  <input type="url" id="coverImageUrl" name="coverImageUrl" placeholder="https://..." />
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" id="submitRestaurantBtn" class="btn">Add Restaurant</button>
+                <button type="button" id="cancelEditBtn" class="btn btn-outline" style="display: none;">
+                  Cancel Edit
                 </button>
               </div>
-              <p id="uploadCoverMessage" class="message"></p>
 
-              <div id="coverPreview" class="image-preview">
-                <img id="coverPreviewImg" src="" alt="Cover preview" />
-              </div>
+              <p id="addRestaurantMessage" class="form-message"></p>
+            </form>
+          </section>
+
+          <section id="manageRestaurants" class="admin-card">
+            <h1>Manage Restaurants</h1>
+            <p>Edit or delete restaurants from your platform.</p>
+
+            <div class="table-wrapper">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Address</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody id="restaurantTableBody">
+                  <tr>
+                    <td colspan="6">Loading restaurants...</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </div>
+          </section>
+        </section>
+      </div>
+    </main>
 
-          <div class="form-buttons">
-            <button id="submitRestaurantBtn" type="submit" class="admin-btn">
-              Add Restaurant
-            </button>
-
-            <button id="cancelEditBtn" type="button" class="cancel-btn">
-              Cancel Edit
-            </button>
-          </div>
-
-          <p id="addRestaurantMessage" class="message"></p>
-        </form>
-      </section>
-
-      <section id="manageRestaurants" class="card">
-        <h2 class="section-title">Manage Restaurants</h2>
-        <p class="section-subtitle">Edit or delete restaurants from Crave Culture</p>
-
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Slug</th>
-                <th>Category</th>
-                <th>Address</th>
-                <th>Price</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-
-            <tbody id="restaurantTableBody">
-              <tr>
-                <td colspan="7">Loading restaurants...</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section id="recentReviews" class="card">
-        <h2 class="section-title">Recent Reviews</h2>
-        <p class="section-subtitle">Latest student reviews</p>
-
-        <div id="recentReviewsList">
-          <p>Loading reviews...</p>
-        </div>
-      </section>
-    </section>
-  </main>
-
-  <script src="dashboard.js"></script>
-</body>
+    <script src="config.js"></script>
+    <script src="dashboard.js"></script>
+  </body>
 </html>
