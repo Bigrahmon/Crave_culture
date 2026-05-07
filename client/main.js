@@ -394,6 +394,29 @@ function handleSearch() {
   });
 }
 
+function setupMobileNav() {
+  const navToggle = document.getElementById("navToggle");
+  const primaryNav = document.getElementById("primaryNav");
+
+  if (!navToggle || !primaryNav) {
+    return;
+  }
+
+  navToggle.addEventListener("click", () => {
+    const isOpen = primaryNav.classList.toggle("is-open");
+    navToggle.classList.toggle("is-open", isOpen);
+    navToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  primaryNav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      primaryNav.classList.remove("is-open");
+      navToggle.classList.remove("is-open");
+      navToggle.setAttribute("aria-expanded", "false");
+    });
+  });
+}
+
 async function loadRestaurants() {
   try {
     const response = await fetch(`${API_BASE_URL}/restaurants`);
@@ -413,6 +436,7 @@ async function loadRestaurants() {
 }
 
 function initPage() {
+  setupMobileNav();
   renderTestimonials(demoTestimonials);
   loadRestaurants();
   handleSearch();

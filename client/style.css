@@ -95,6 +95,38 @@ a {
   color: #fff;
 }
 
+.nav-toggle {
+  display: none;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  background: transparent;
+  border-radius: 10px;
+  width: 42px;
+  height: 42px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  margin: 5px 0;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.nav-toggle.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
 .hero-home {
   min-height: 88vh;
   position: relative;
@@ -925,17 +957,46 @@ a {
 
 @media (max-width: 760px) {
   .nav {
-    flex-direction: column;
+    min-height: 66px;
+    padding: 12px 0;
+    position: relative;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-    padding: 16px 0;
+    margin-left: auto;
   }
 
   .nav nav {
-    justify-content: center;
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background: rgba(100, 13, 46, 0.98);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 14px;
+    padding: 12px;
+    gap: 10px;
+    flex-direction: column;
+    z-index: 1001;
+  }
+
+  .nav nav.is-open {
+    display: flex;
+  }
+
+  .nav nav a {
+    display: block;
     width: 100%;
-    overflow-x: auto;
-    padding-bottom: 4px;
-    -webkit-overflow-scrolling: touch;
+    padding: 10px 12px;
+    border-radius: 10px;
+  }
+
+  .nav nav a:hover {
+    background: rgba(255, 255, 255, 0.12);
   }
 
   .hero-content {
@@ -987,6 +1048,11 @@ a {
 @media (max-width: 480px) {
   .brand {
     font-size: 1.5rem;
+  }
+
+  .brand-logo {
+    width: 30px;
+    height: 30px;
   }
 
   .hero-content {
